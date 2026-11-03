@@ -18,7 +18,6 @@ function sapaan() {
   return 'Selamat malam 🌙'
 }
 
-// Seksi menu dengan bingkai rapi
 function seksi(judul, baris) {
   return [
     `╭───〖 *${judul}* 〗`,
@@ -57,6 +56,7 @@ function buildMenu() {
       `${P}pilih a | b | c`,
       `${P}umur YYYY-MM-DD`,
       `${P}id`,
+      `${P}value <nama_buah>`,
     ]),
     ...seksi('🎨 STIKER', [
       `${P}stiker  (kirim/reply gambar)`,
@@ -79,6 +79,8 @@ function buildMenu() {
       `${P}info`,
       `${P}menu`,
       `${P}help [nama]  (contoh pemakaian)`,
+      `${P}flush`,
+      `${P}shutdown`,
     ]),
     `╭───〖 📜 *ATURAN BOT* 〗`,
     `├  ◦ Tanpa spasi: ${P}dadu, bukan ${P} dadu`,

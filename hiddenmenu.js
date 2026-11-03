@@ -2,15 +2,14 @@ const config = require('./config')
 const msg = require('./messages')
 const P = config.prefix
 
-// Label akses dibaca dari config.permissions, jadi selalu sesuai
 const lvl = (cmd) => {
+  if (cmd === 'shutdown' || cmd === 'flush') return '👑 owner'
   const l = config.permissions[cmd] || 'all'
   if (l === 'owner') return '👑 owner'
   if (l === 'admin') return '🛡️ admin'
   return '🌐 semua'
 }
 
-// [nama command, contoh penulisan]
 const DAFTAR = [
   ['🎲 FUN', [
     ['dadu', 'dadu [sisi]'], ['koin', 'koin'], ['slot', 'slot'],
@@ -20,7 +19,7 @@ const DAFTAR = [
   ['🧰 USEFUL', [
     ['hitung', 'hitung <expr>'], ['cuaca', 'cuaca <kota>'], ['waktu', 'waktu'],
     ['grupinfo', 'grupinfo'], ['member', 'member'], ['pilih', 'pilih <a | b | c>'],
-    ['umur', 'umur <YYYY-MM-DD>'], ['id', 'id'],
+    ['umur', 'umur <YYYY-MM-DD>'], ['id', 'id'], ['value', 'value <nama_buah>'],
   ]],
   ['🎨 STIKER', [
     ['stiker', 'stiker'], ['textstiker', 'textstiker <teks>'], ['toimg', 'toimg (balas stiker)'],
@@ -34,6 +33,7 @@ const DAFTAR = [
   ]],
   ['⚙️ SISTEM', [
     ['ping', 'ping'], ['info', 'info'], ['menu', 'menu'], ['help', 'help [nama]'],
+    ['flush', 'flush'], ['shutdown', 'shutdown'],
   ]],
 ]
 

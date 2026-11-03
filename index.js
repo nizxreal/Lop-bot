@@ -10,13 +10,29 @@ const config = require('./config')
 const handlers = require('./commands')
 const groupModule = require('./group')
 
-Object.assign(handlers, groupModule.handlers, require('./menu').handlers, require('./tarot').handlers, require('./download').handlers, require('./hiddenmenu').handlers, require('./teksgambar').handlers, require('./stiker').handlers, require('./teksstiker').handlers, require('./toimg').handlers, require('./help').handlers, require('./useful').handlers)
+Object.assign(
+  handlers,
+  groupModule.handlers,
+  require('./menu').handlers,
+  require('./tarot').handlers,
+  require('./download').handlers,
+  require('./hiddenmenu').handlers,
+  require('./teksgambar').handlers,
+  require('./stiker').handlers,
+  require('./teksstiker').handlers,
+  require('./toimg').handlers,
+  require('./help').handlers,
+  require('./useful').handlers,
+  require('./shutdown').handlers,
+  require('./flush').handlers,
+  require('./value').handlers
+)
 const { loadBanned, getNumber } = groupModule
 
 const logger = pino({ level: 'silent' })
-const sentIds = new Set() // mencegah bot memproses pesannya sendiri
-const lastUse = new Map() // jeda per pengirim (anti-spam)
-const metaCache = new Map() // cache info grup
+const sentIds = new Set()
+const lastUse = new Map()
+const metaCache = new Map()
 const META_TTL = 60_000
 
 function ask(question) {
@@ -53,13 +69,11 @@ async function startBot() {
     browser: ['Ubuntu', 'Chrome', '120.0.0'],
   })
 
-  // Chat "diri sendiri" (nomor biasa atau LID)
   const isSelfChat = (jid) => {
     const myIds = [sock.user?.id, sock.user?.lid].filter(Boolean).map(getNumber)
     return myIds.includes(getNumber(jid))
   }
 
-  // Ambil info grup, dengan cache 60 detik
   const getMeta = async (jid) => {
     const cached = metaCache.get(jid)
     if (cached && Date.now() - cached.at < META_TTL) return cached.data
@@ -68,13 +82,11 @@ async function startBot() {
     return data
   }
 
-  // Cari anggota berdasarkan nomor (id biasa atau lid)
   const findParticipant = (meta, numbers) =>
     meta?.participants.find((p) =>
       [p.id, p.lid].filter(Boolean).some((x) => numbers.includes(getNumber(x)))
     )
 
-  // Login dengan kode pairing (bukan QR)
   if (!sock.authState.creds.registered) {
     const nomor = (await ask('Masukkan nomor WA kamu (contoh 628123456789): ')).replace(/\D/g, '')
     await new Promise((r) => setTimeout(r, 3000))
@@ -99,7 +111,6 @@ async function startBot() {
     }
   })
 
-  // Anggota yang sudah di-ban otomatis dikeluarkan jika masuk lagi
   sock.ev.on('group-participants.update', async ({ id, participants, action }) => {
     if (action !== 'add') return
     const banned = loadBanned()
@@ -134,10 +145,8 @@ async function startBot() {
       const text = getText(msg).trim()
       if (!text.startsWith(config.prefix)) continue
 
-      // Chat pribadi: hanya chat diri sendiri. Chat dari orang lain diabaikan.
       if (!isGroup && !(msg.key.fromMe ? isSelfChat(jid) : [jid, msg.key.remoteJidAlt].filter(Boolean).map(getNumber).some((n) => config.owners.includes(n)))) continue
 
-      // Siapa pengirimnya
       const senderJid = msg.key.fromMe
         ? sock.user.id
         : isGroup
@@ -146,7 +155,6 @@ async function startBot() {
       const senderNums = [senderJid, msg.key.participantAlt].filter(Boolean).map(getNumber)
       const isOwner = msg.key.fromMe || senderNums.some((n) => config.owners.includes(n))
 
-      // Status admin (hanya untuk grup)
       let isAdmin = false
       let isBotAdmin = false
       if (isGroup) {
@@ -160,12 +168,10 @@ async function startBot() {
       const handler = handlers[cmd]
       if (!handler) continue
 
-      // Cek hak akses. Kalau ditolak, diam saja supaya tidak menambah spam.
       const level = config.permissions[cmd] || 'all'
       if (level === 'owner' && !isOwner) continue
       if (level === 'admin' && !isOwner && !isAdmin) continue
 
-      // Jeda per pengirim (owner dikecualikan)
       const key = senderNums[0]
       const now = Date.now()
       if (!isOwner && now - (lastUse.get(key) || 0) < config.cooldownMs) continue
