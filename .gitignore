@@ -1,0 +1,19 @@
+# Dependency
+node_modules/
+
+# RAHASIA: sesi login WhatsApp, jangan pernah di-push
+auth/
+.env
+
+# Data lokal bot
+banned.json
+schedule.json
+
+# File besar dan materi (tidak perlu di Git)
+materi/
+fonts/
+assets/
+tes.png
+
+# Log
+*.log

@@ -1,0 +1,15 @@
+{
+  "name": "lop-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@coflyn/scrapr": "^1.4.0",
+    "@whiskeysockets/baileys": "^6.7.9",
+    "axios": "^1.21.0",
+    "node-webpmux": "^3.2.1",
+    "pino": "^9.0.0"
+  }
+}
