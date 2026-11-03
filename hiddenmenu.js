@@ -19,9 +19,11 @@ const DAFTAR = [
   ]],
   ['🧰 USEFUL', [
     ['hitung', 'hitung <expr>'], ['cuaca', 'cuaca <kota>'], ['waktu', 'waktu'],
+    ['grupinfo', 'grupinfo'], ['member', 'member'], ['pilih', 'pilih <a | b | c>'],
+    ['umur', 'umur <YYYY-MM-DD>'], ['id', 'id'],
   ]],
   ['🎨 STIKER', [
-    ['stiker', 'stiker'], ['textstiker', 'textstiker <teks>'],
+    ['stiker', 'stiker'], ['textstiker', 'textstiker <teks>'], ['toimg', 'toimg (balas stiker)'],
   ]],
   ['📥 DOWNLOADER', [
     ['tiktok', 'tiktok <link>'], ['ig', 'ig <link>'], ['spotify', 'spotify <link>'],
@@ -31,7 +33,7 @@ const DAFTAR = [
     ['tagall', 'tagall [pesan]'],
   ]],
   ['⚙️ SISTEM', [
-    ['ping', 'ping'], ['info', 'info'], ['menu', 'menu'],
+    ['ping', 'ping'], ['info', 'info'], ['menu', 'menu'], ['help', 'help [nama]'],
   ]],
 ]
 

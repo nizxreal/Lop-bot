@@ -10,7 +10,7 @@ const config = require('./config')
 const handlers = require('./commands')
 const groupModule = require('./group')
 
-Object.assign(handlers, groupModule.handlers, require('./menu').handlers, require('./tarot').handlers, require('./download').handlers, require('./hiddenmenu').handlers, require('./teksgambar').handlers, require('./stiker').handlers, require('./teksstiker').handlers)
+Object.assign(handlers, groupModule.handlers, require('./menu').handlers, require('./tarot').handlers, require('./download').handlers, require('./hiddenmenu').handlers, require('./teksgambar').handlers, require('./stiker').handlers, require('./teksstiker').handlers, require('./toimg').handlers, require('./help').handlers, require('./useful').handlers)
 const { loadBanned, getNumber } = groupModule
 
 const logger = pino({ level: 'silent' })
