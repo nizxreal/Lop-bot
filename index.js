@@ -9,11 +9,15 @@ const readline = require('readline')
 const config = require('./config')
 const handlers = require('./commands')
 const groupModule = require('./group')
+const groupFeatures = require('./groupFeatures')
+const { getGlobalSettings, saveGroupList } = require('./db')
 
 Object.assign(
   handlers,
   groupModule.handlers,
+  groupFeatures.handlers,
   require('./menu').handlers,
+  require('./lopbot').handlers,
   require('./tarot').handlers,
   require('./download').handlers,
   require('./hiddenmenu').handlers,
@@ -25,14 +29,12 @@ Object.assign(
   require('./useful').handlers,
   require('./shutdown').handlers,
   require('./flush').handlers,
-  require('./value').handlers, require('./bf').handlers,
-  require('./profile').handlers, require('./v4guide').handlers
+  require('./value').handlers,
+  require('./profile').handlers
 )
-const { loadBanned, getNumber } = groupModule
-
+const { getNumber } = groupModule
 const logger = pino({ level: 'silent' })
 const sentIds = new Set()
-const lastUse = new Map()
 const metaCache = new Map()
 const META_TTL = 60_000
 
@@ -70,11 +72,6 @@ async function startBot() {
     browser: ['Ubuntu', 'Chrome', '120.0.0'],
   })
 
-  const isSelfChat = (jid) => {
-    const myIds = [sock.user?.id, sock.user?.lid].filter(Boolean).map(getNumber)
-    return myIds.includes(getNumber(jid))
-  }
-
   const getMeta = async (jid) => {
     const cached = metaCache.get(jid)
     if (cached && Date.now() - cached.at < META_TTL) return cached.data
@@ -90,49 +87,43 @@ async function startBot() {
 
   if (!sock.authState.creds.registered) {
     const nomor = (await ask('Masukkan nomor WA kamu (contoh 628123456789): ')).replace(/\D/g, '')
-    await new Promise((r) => setTimeout(r, 8000))
+    await new Promise((r) => setTimeout(r, 3000))
     const kode = await sock.requestPairingCode(nomor)
     console.log(`\n🔑 Kode pairing kamu: ${kode}`)
-    console.log('WhatsApp > Perangkat tertaut > Tautkan perangkat > Tautkan dengan nomor telepon\n')
   }
 
   sock.ev.on('creds.update', saveCreds)
 
-  sock.ev.on('connection.update', ({ connection, lastDisconnect }) => {
-    if (connection === 'open') console.log(`✅ ${config.botName} terhubung!`)
+  sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
+    if (connection === 'open') {
+      console.log(`✅ Lop-Bot terhubung ke WhatsApp!`)
+      try {
+        const chats = await sock.groupFetchAllParticipating()
+        const list = Object.values(chats).map(g => ({
+          id: g.id,
+          subject: g.subject,
+          membersCount: g.participants ? g.participants.length : 0
+        }))
+        saveGroupList(list)
+        console.log(`📋 Sinkronisasi ${list.length} grup ke Dashboard Web!`)
+      } catch (err) {
+        console.error('Gagal sinkron grup:', err.message)
+      }
+    }
 
     if (connection === 'close') {
       const statusCode = lastDisconnect?.error?.output?.statusCode
       if (statusCode === DisconnectReason.loggedOut) {
-        console.log('❌ Sesi logout. Hapus folder auth/ lalu jalankan ulang.')
+        console.log('❌ Sesi logout.')
         process.exit(0)
       }
-      console.log('🔄 Koneksi putus, mencoba menyambung ulang...')
       startBot()
     }
   })
 
-  sock.ev.on('group-participants.update', async ({ id, participants, action }) => {
-    if (action !== 'add') return
-    const banned = loadBanned()
-    const hit = participants.filter((p) => banned.includes(getNumber(p)))
-    if (!hit.length) return
-    try {
-      await sock.groupParticipantsUpdate(id, hit, 'remove')
-      console.log(`🔨 Auto-kick anggota yang di-ban di ${id}`)
-    } catch (e) {
-      console.error('Gagal auto-kick:', e.message)
-    }
+  sock.ev.on('group-participants.update', async (update) => {
+    await groupFeatures.handleParticipantsUpdate(sock, update)
   })
-
-  const send = async (jid, content, opts) => {
-    const res = await sock.sendMessage(jid, content, opts)
-    if (res?.key?.id) {
-      sentIds.add(res.key.id)
-      if (sentIds.size > 500) sentIds.clear()
-    }
-    return res
-  }
 
   sock.ev.on('messages.upsert', async ({ messages, type }) => {
     if (type !== 'notify') return
@@ -141,19 +132,18 @@ async function startBot() {
       if (!msg.message) continue
       if (sentIds.has(msg.key.id)) continue
 
+      const globalSettings = getGlobalSettings()
+      const dynamicPrefix = globalSettings.prefix || config.prefix
+
       const jid = msg.key.remoteJid
       const isGroup = jid.endsWith('@g.us')
       const text = getText(msg).trim()
-      if (!isGroup && (await require('./daftar').handleDm({ sock, msg, jid, text }))) continue
-      if (!text.startsWith(config.prefix)) continue
 
-      if (!isGroup && !(msg.key.fromMe ? isSelfChat(jid) : [jid, msg.key.remoteJidAlt].filter(Boolean).map(getNumber).some((n) => config.owners.includes(n)))) continue
+      if (globalSettings.autoMute && jid) {
+        sock.chatModify({ mute: 8 * 3600 * 1000 }, jid).catch(() => {})
+      }
 
-      const senderJid = msg.key.fromMe
-        ? sock.user.id
-        : isGroup
-          ? msg.key.participant
-          : jid
+      const senderJid = msg.key.fromMe ? sock.user.id : isGroup ? msg.key.participant : jid
       const senderNums = [senderJid, msg.key.participantAlt].filter(Boolean).map(getNumber)
       const isOwner = msg.key.fromMe || senderNums.some((n) => config.owners.includes(n))
 
@@ -165,7 +155,14 @@ async function startBot() {
         isBotAdmin = isAdminP(findParticipant(meta, [getNumber(sock.user.id), getNumber(sock.user.lid)]))
       }
 
-      const [rawCmd, ...args] = text.slice(config.prefix.length).split(/\s+/)
+      const violated = await groupFeatures.handleGroupMessages({
+        sock, msg, jid, text, isGroup, isAdmin, isBotAdmin, senderJid
+      })
+      if (violated) continue
+
+      if (!text.startsWith(dynamicPrefix)) continue
+
+      const [rawCmd, ...args] = text.slice(dynamicPrefix.length).split(/\s+/)
       const cmd = rawCmd.toLowerCase()
       const handler = handlers[cmd]
       if (!handler) continue
@@ -174,21 +171,10 @@ async function startBot() {
       if (level === 'owner' && !isOwner) continue
       if (level === 'admin' && !isOwner && !isAdmin) continue
 
-      const key = senderNums[0]
-      const now = Date.now()
-      if (!isOwner && now - (lastUse.get(key) || 0) < config.cooldownMs) continue
-      lastUse.set(key, now)
-
-      const reply = (t) => send(jid, { text: t }, { quoted: msg })
-
       try {
-        await handler({
-          sock, msg, jid, args, reply, send,
-          isGroup, isOwner, isAdmin, isBotAdmin,
-        })
+        await handler({ sock, msg, jid, args, reply: (t) => sock.sendMessage(jid, { text: t }, { quoted: msg }), isGroup, isOwner, isAdmin, isBotAdmin })
       } catch (err) {
         console.error(`Error di !${cmd}:`, err)
-        await reply(require('./messages').error)
       }
     }
   })

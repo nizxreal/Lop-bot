@@ -8,6 +8,7 @@ const SESI_MS = 5 * 60_000
 const COOLDOWN_MS = 10_000
 const REFRESH_MS = 24 * 3600_000
 const USERNAME_RE = /^[A-Za-z0-9_]{3,20}$/
+const PERINTAH_BATAL = ['batal', 'cancel']
 
 const sesi = new Map()
 const cooldown = new Map()
@@ -79,7 +80,7 @@ const CONSENT = () =>
     '',
     'Data ini ditampilkan di profil kamu. Tidak ada password atau data login yang diminta.',
     '',
-    'Balas *1* untuk setuju, *2* untuk batal.',
+    'Balas *1* untuk setuju, *2* untuk batal, atau ketik *batal*/*cancel* kapan saja.',
   ].join('\n')
 
 async function handleDm({ sock, msg, jid, text }) {
@@ -90,8 +91,15 @@ async function handleDm({ sock, msg, jid, text }) {
   const kunci = kunciDari(msg, jid)
   const kirim = (x) => sock.sendMessage(jid, { text: x }, { quoted: msg })
 
-  // Sedang dalam sesi pendaftaran: pesan tanpa prefix dianggap jawaban
   const s = sesiAktif(jid)
+  const inputBatal = PERINTAH_BATAL.includes(t.toLowerCase()) || PERINTAH_BATAL.includes(cmd)
+  if (s && inputBatal) {
+    sesi.delete(jid)
+    await kirim('🚫 *DIBATALKAN*\nPendaftaran dihentikan. Data tidak disimpan.')
+    return true
+  }
+
+  // Sedang dalam sesi pendaftaran: pesan tanpa prefix dianggap jawaban
   if (s && !cmd) {
     await lanjutkan(s, t, jid, kirim)
     return true
@@ -132,43 +140,38 @@ async function handleDm({ sock, msg, jid, text }) {
 }
 
 async function lanjutkan(s, t, jid, kirim) {
-  if (t.toLowerCase() === 'batal') {
-    sesi.delete(jid)
-    return kirim('🚫 *DIBATALKAN*\nPendaftaran dihentikan.')
-  }
-
   if (s.langkah === 'setuju') {
     if (t === '1') {
       s.langkah = 'username'
-      return kirim('Balas dengan *username Roblox* kamu, tanpa @.')
+      return kirim('Balas dengan *username Roblox* kamu, tanpa @.\nKetik *batal* atau *cancel* kapan saja untuk membatalkan.')
     }
     if (t === '2') {
       sesi.delete(jid)
       return kirim('🚫 *DIBATALKAN*\nData tidak disimpan.')
     }
-    return kirim('Balas *1* untuk setuju, atau *2* untuk batal.')
+    return kirim('Balas *1* untuk setuju, *2* untuk batal, atau ketik *batal*/*cancel* untuk membatalkan.')
   }
 
   if (s.langkah === 'username') {
     const username = t.replace(/^@/, '')
     if (!USERNAME_RE.test(username)) {
-      return kirim('⛔ Format salah. Gunakan 3 sampai 20 huruf, angka, atau garis bawah.')
+      return kirim('⛔ Format salah. Gunakan 3 sampai 20 huruf, angka, atau garis bawah.\nKetik *batal* atau *cancel* untuk membatalkan.')
     }
     let akun
     try {
       akun = await rb.cariUser(username)
     } catch (err) {
       console.error('Roblox cariUser gagal:', err.message)
-      return kirim('❌ Roblox sedang tidak bisa dihubungi. Coba lagi nanti.')
+      return kirim('❌ Roblox sedang tidak bisa dihubungi. Coba lagi nanti, atau ketik *batal*/*cancel* untuk membatalkan.')
     }
-    if (!akun) return kirim('⛔ Username tidak ditemukan. Coba lagi, atau ketik batal.')
+    if (!akun) return kirim('⛔ Username tidak ditemukan. Coba lagi, atau ketik *batal*/*cancel* untuk membatalkan.')
 
     let detail
     try {
       detail = await rb.ambilUser(akun.id)
     } catch (err) {
       console.error('Roblox ambilUser gagal:', err.message)
-      return kirim('❌ Data akun gagal diambil. Coba lagi nanti.')
+      return kirim('❌ Data akun gagal diambil. Coba lagi nanti, atau ketik *batal*/*cancel* untuk membatalkan.')
     }
 
     if (db.cariByRbId(detail.id, s.kunci)) {
@@ -183,7 +186,7 @@ async function lanjutkan(s, t, jid, kirim) {
       `Username : ${detail.name}`,
       `Nama     : ${detail.displayName}`,
       '',
-      'Apakah ini akun kamu? Balas *1* jika benar, *2* jika salah.',
+      'Apakah ini akun kamu? Balas *1* jika benar, *2* jika ingin memasukkan username lain, atau ketik *batal*/*cancel* untuk membatalkan.',
     ].join('\n'))
   }
 
@@ -195,9 +198,9 @@ async function lanjutkan(s, t, jid, kirim) {
     }
     if (t === '2') {
       s.langkah = 'username'
-      return kirim('Balas dengan username Roblox yang benar.')
+      return kirim('Balas dengan username Roblox yang benar.\nKetik *batal* atau *cancel* kapan saja untuk membatalkan.')
     }
-    return kirim('Balas *1* jika benar, atau *2* jika salah.')
+    return kirim('Balas *1* jika benar, *2* jika ingin memasukkan username lain, atau ketik *batal*/*cancel* untuk membatalkan.')
   }
 }
 

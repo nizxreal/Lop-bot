@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lop-Bot Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: #0f0f11; color: #e1e1e6; padding: 0; font-size: 14px; overflow-x: hidden; }
+    header { display: flex; align-items: center; justify-content: space-between; background: #18181b; padding: 14px 20px; border-bottom: 1px solid #27272a; position: sticky; top: 0; z-index: 100; }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .menu-btn { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 4px; }
+    .logo { font-size: 18px; font-weight: 700; color: #fff; }
+    .status-badge { color: #22c55e; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .status-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; }
+
+    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 200; opacity: 0; visibility: hidden; transition: 0.3s; }
+    .sidebar-overlay.active { opacity: 1; visibility: visible; }
+    .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: #18181b; border-right: 1px solid #27272a; z-index: 201; transition: 0.3s; padding: 20px; display: flex; flex-direction: column; }
+    .sidebar.active { left: 0; }
+    .sidebar-header { font-size: 16px; font-weight: 700; color: #fff; padding-bottom: 15px; border-bottom: 1px solid #27272a; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .close-btn { background: none; border: none; color: #a1a1aa; font-size: 20px; cursor: pointer; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; color: #a1a1aa; cursor: pointer; margin-bottom: 6px; }
+    .nav-item.active { background: #27272a; color: #22c55e; }
+
+    .container { max-width: 650px; margin: 20px auto; padding: 0 16px; }
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+    .card { background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #f4f4f5; display: flex; align-items: center; gap: 8px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 6px; font-size: 13px; color: #a1a1aa; }
+    input[type="text"], input[type="number"], textarea, select { width: 100%; background: #09090b; border: 1px solid #27272a; color: #fff; padding: 10px 12px; border-radius: 8px; outline: none; font-size: 14px; }
+    textarea { height: 110px; resize: vertical; font-family: monospace; }
+    
+    .toggle-group { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #27272a; }
+    .toggle-group:last-child { border-bottom: none; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #3f3f46; transition: .3s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: #22c55e; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    
+    .btn { background: #22c55e; color: #000; font-weight: 600; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 8px; }
+    .btn:active { opacity: 0.8; }
+    .placeholders { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .chip { background: #27272a; font-size: 11px; padding: 4px 8px; border-radius: 4px; color: #a1a1aa; cursor: pointer; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="logo">Lop-Bot</div>
+    </div>
+    <div class="status-badge"><span class="status-dot"></span> Online</div>
+  </header>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span>Menu Dashboard</span>
+      <button class="close-btn" onclick="toggleSidebar()">✕</button>
+    </div>
+    <div class="nav-item active" onclick="switchView('global', this)">⚙️ Pengaturan Global & Bot</div>
+    <div class="nav-item" onclick="switchView('group', this)">🛡️ Fitur & Moderasi Grup</div>
+  </div>
+
+  <div class="container">
+    
+    <!-- VIEW 1: GLOBAL -->
+    <div id="globalView" class="view-section active">
+      <div class="card">
+        <div class="card-title">⚙️ Saklar Utama (Toggles)</div>
+        <div class="toggle-group">
+          <div><strong>Public Mode</strong><br><small style="color:#71717a">Semua orang bisa pakai bot</small></div>
+          <label class="switch"><input type="checkbox" id="publicMode"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-group">
+          <div><strong>Hanya Grup</strong><br><small style="color:#71717a">Bot hanya merespons di grup</small></div>
+          <label class="switch"><input type="checkbox" id="onlyGroup"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-group">
+          <div><strong>Anti Call</strong><br><small style="color:#71717a">Tolak panggilan otomatis</small></div>
+          <label class="switch"><input type="checkbox" id="antiCall"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-group">
+          <div><strong>Auto Read</strong><br><small style="color:#71717a">Tandai pesan dibaca otomatis</small></div>
+          <label class="switch"><input type="checkbox" id="autoRead"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-group">
+          <div><strong>Auto Bisukan Chat</strong><br><small style="color:#71717a">Bisu otomatis semua chat masuk</small></div>
+          <label class="switch"><input type="checkbox" id="autoMute"><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🖼️ Media & Forward Saluran (.lopbot)</div>
+        <div class="form-group">
+          <label>URL Gambar Banner (.jpg / .png Direct Link)</label>
+          <input type="text" id="bannerUrl" placeholder="https://files.catbox.moe/k93y9i.jpg">
+        </div>
+        <div class="form-group">
+          <label>Nama Saluran WhatsApp</label>
+          <input type="text" id="channelName" placeholder="LopBot Official Channel">
+        </div>
+        <div class="form-group">
+          <label>ID Saluran WA (JID Newsletter)</label>
+          <input type="text" id="channelJid" placeholder="120363xxx@newsletter">
+        </div>
+        <div class="form-group">
+          <label>Link Saluran / Web Gateway</label>
+          <input type="text" id="channelLink" placeholder="https://whatsapp.com/channel/xxx">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎨 Identitas & Template Menu</div>
+        <div class="form-group">
+          <label>Prefix Command</label>
+          <input type="text" id="prefix" placeholder=".">
+        </div>
+        <div class="form-group">
+          <label>Nama Bot</label>
+          <input type="text" id="botName" placeholder="Lop-Bot">
+        </div>
+        <div class="form-group">
+          <label>Nomor Owner Bot (Contoh: 628123456789)</label>
+          <input type="text" id="ownerNumber" placeholder="628xxxxxxxx">
+        </div>
+        <div class="form-group">
+          <label>Caption Main Menu (.lopbot)</label>
+          <textarea id="menuCaption"></textarea>
+          <div class="placeholders">
+            <span class="chip" onclick="addTag('$pushname')">$pushname</span>
+            <span class="chip" onclick="addTag('$botname')">$botname</span>
+            <span class="chip" onclick="addTag('$prefix')">$prefix</span>
+            <span class="chip" onclick="addTag('$uptime')">$uptime</span>
+            <span class="chip" onclick="addTag('$isPublic')">$isPublic</span>
+            <span class="chip" onclick="addTag('$ownernumber')">$ownernumber</span>
+            <span class="chip" onclick="addTag('$isOwner')">$isOwner</span>
+            <span class="chip" onclick="addTag('$category')">$category</span>
+          </div>
+        </div>
+        <button class="btn" onclick="saveGlobalSettings()">Simpan Konfigurasi Global</button>
+      </div>
+    </div>
+
+    <!-- VIEW 2: GROUP MODERATION -->
+    <div id="groupView" class="view-section">
+      <div class="card">
+        <div class="card-title">👥 Pilih Grup</div>
+        <div class="form-group">
+          <label>Pengaturan berlaku untuk grup yang dipilih.</label>
+          <select id="groupSelect" onchange="loadGroupSettings()">
+            <option value="">-- Memuat daftar grup... --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">👋 Welcome & Goodbye</div>
+        <div class="toggle-group">
+          <div><strong>Aktifkan Welcome</strong></div>
+          <label class="switch"><input type="checkbox" id="welcomeEnabled"><span class="slider"></span></label>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+          <label>Pesan Welcome</label>
+          <input type="text" id="welcomeMsg">
+        </div>
+        <div class="toggle-group">
+          <div><strong>Aktifkan Goodbye</strong></div>
+          <label class="switch"><input type="checkbox" id="goodbyeEnabled"><span class="slider"></span></label>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+          <label>Pesan Goodbye</label>
+          <input type="text" id="goodbyeMsg">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔗 Anti-Link & Moderasi</div>
+        <div class="toggle-group">
+          <div><strong>Aktifkan Anti-Link</strong></div>
+          <label class="switch"><input type="checkbox" id="antiLinkEnabled"><span class="slider"></span></label>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+          <label>Tindakan Anti-Link</label>
+          <select id="antiLinkAction">
+            <option value="warn">Beri Warning (Peringatan)</option>
+            <option value="delete">Hapus Pesan Saja</option>
+            <option value="kick">Langsung Kick</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Maksimal Warning Sebelum Kick</label>
+          <input type="number" id="maxWarnings" value="3">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📜 Aturan Grup (.rules)</div>
+        <div class="form-group">
+          <textarea id="groupRules"></textarea>
+        </div>
+        <button class="btn" onclick="saveGroupSettings()">Simpan Konfigurasi Grup</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
+
+    function switchView(viewName, el) {
+      document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      
+      if (viewName === 'global') {
+        document.getElementById('globalView').classList.add('active');
+      } else {
+        document.getElementById('groupView').classList.add('active');
+        loadGroupList();
+      }
+      
+      el.classList.add('active');
+      toggleSidebar();
+    }
+
+    async function loadGroupList() {
+      const select = document.getElementById('groupSelect');
+      select.innerHTML = '<option value="">-- Memuat daftar grup... --</option>';
+      try {
+        const res = await fetch('/api/groups');
+        const { data } = await res.json();
+        if (data && data.length > 0) {
+          select.innerHTML = '<option value="">-- Pilih Grup WhatsApp --</option>';
+          data.forEach(g => {
+            const opt = document.createElement('option');
+            opt.value = g.id;
+            opt.textContent = `${g.subject} (${g.membersCount} anggota)`;
+            select.appendChild(opt);
+          });
+        } else {
+          select.innerHTML = '<option value="">(Belum ada data grup / Bot belum menyambung)</option>';
+        }
+      } catch (e) {
+        select.innerHTML = '<option value="">Gagal mengambil daftar grup</option>';
+      }
+    }
+
+    async function loadGlobalSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const { data } = await res.json();
+        if (data) {
+          document.getElementById('publicMode').checked = !!data.publicMode;
+          document.getElementById('onlyGroup').checked = !!data.onlyGroup;
+          document.getElementById('antiCall').checked = !!data.antiCall;
+          document.getElementById('autoRead').checked = !!data.autoRead;
+          document.getElementById('autoMute').checked = !!data.autoMute;
+          document.getElementById('prefix').value = data.prefix || '.';
+          document.getElementById('botName').value = data.botName || 'Lop-Bot';
+          document.getElementById('ownerNumber').value = data.ownerNumber || '';
+          document.getElementById('bannerUrl').value = data.bannerUrl || '';
+          document.getElementById('channelName').value = data.channelName || '';
+          document.getElementById('channelJid').value = data.channelJid || '';
+          document.getElementById('channelLink').value = data.channelLink || '';
+          document.getElementById('menuCaption').value = data.menuCaption || '';
+        }
+      } catch (e) {}
+    }
+
+    async function saveGlobalSettings() {
+      const payload = {
+        publicMode: document.getElementById('publicMode').checked,
+        onlyGroup: document.getElementById('onlyGroup').checked,
+        antiCall: document.getElementById('antiCall').checked,
+        autoRead: document.getElementById('autoRead').checked,
+        autoMute: document.getElementById('autoMute').checked,
+        prefix: document.getElementById('prefix').value,
+        botName: document.getElementById('botName').value,
+        ownerNumber: document.getElementById('ownerNumber').value,
+        bannerUrl: document.getElementById('bannerUrl').value,
+        channelName: document.getElementById('channelName').value,
+        channelJid: document.getElementById('channelJid').value,
+        channelLink: document.getElementById('channelLink').value,
+        menuCaption: document.getElementById('menuCaption').value
+      };
+
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      alert(result.message || 'Tersimpan!');
+    }
+
+    async function loadGroupSettings() {
+      const groupId = document.getElementById('groupSelect').value;
+      if (!groupId) return;
+      try {
+        const res = await fetch(`/api/groups/${encodeURIComponent(groupId)}`);
+        const { data } = await res.json();
+        if (data) {
+          document.getElementById('welcomeEnabled').checked = !!data.welcomeEnabled;
+          document.getElementById('welcomeMsg').value = data.welcomeMsg || '';
+          document.getElementById('goodbyeEnabled').checked = !!data.goodbyeEnabled;
+          document.getElementById('goodbyeMsg').value = data.goodbyeMsg || '';
+          document.getElementById('antiLinkEnabled').checked = !!data.antiLinkEnabled;
+          document.getElementById('antiLinkAction').value = data.antiLinkAction || 'warn';
+          document.getElementById('maxWarnings').value = data.maxWarnings || 3;
+          document.getElementById('groupRules').value = data.rules || '';
+        }
+      } catch (e) {}
+    }
+
+    async function saveGroupSettings() {
+      const groupId = document.getElementById('groupSelect').value;
+      if (!groupId) return alert('Pilih grup terlebih dahulu dari menu!');
+
+      const payload = {
+        welcomeEnabled: document.getElementById('welcomeEnabled').checked,
+        welcomeMsg: document.getElementById('welcomeMsg').value,
+        goodbyeEnabled: document.getElementById('goodbyeEnabled').checked,
+        goodbyeMsg: document.getElementById('goodbyeMsg').value,
+        antiLinkEnabled: document.getElementById('antiLinkEnabled').checked,
+        antiLinkAction: document.getElementById('antiLinkAction').value,
+        maxWarnings: parseInt(document.getElementById('maxWarnings').value) || 3,
+        rules: document.getElementById('groupRules').value
+      };
+
+      const res = await fetch(`/api/groups/${encodeURIComponent(groupId)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      alert(result.message || 'Tersimpan!');
+    }
+
+    function addTag(tag) {
+      const txt = document.getElementById('menuCaption');
+      txt.value += ' ' + tag;
+    }
+
+    loadGlobalSettings();
+  </script>
+</body>
+</html>

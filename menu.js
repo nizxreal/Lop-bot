@@ -1,130 +1,90 @@
+const { getGlobalSettings } = require('./db')
 const config = require('./config')
-const msg = require('./messages')
-const P = config.prefix
-
-const badge = (cmd) => ((config.permissions[cmd] || 'all') === 'admin' ? ' 🛡️' : '')
-
-const jamWIB = () =>
-  parseInt(
-    new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta', hour: 'numeric', hour12: false }),
-    10
-  )
-
-function sapaan() {
-  const h = jamWIB()
-  if (h >= 4 && h < 11) return 'Selamat pagi ☀️'
-  if (h >= 11 && h < 15) return 'Selamat siang 🌤️'
-  if (h >= 15 && h < 18) return 'Selamat sore 🌇'
-  return 'Selamat malam 🌙'
-}
-
-function seksi(judul, baris) {
-  return [
-    `╭───〖 *${judul}* 〗`,
-    ...baris.map((b) => `├  ◦ ${b}`),
-    `╰───────────────────`,
-    '',
-  ]
-}
-
-function buildMenu() {
-  return [
-    `╭─────────────────────╮`,
-    `│  *${sapaan()}!*`,
-    `│  Aku *${config.botName}*`,
-    `╰─────────────────────╯`,
-    '',
-    `  ❖ *${config.botName.toUpperCase()} · DASHBOARD* ❖`,
-    msg.garis,
-    '',
-    ...seksi('🎲 FUN', [
-      `${P}dadu [sisi]`,
-      `${P}koin`,
-      `${P}slot`,
-      `${P}jodoh A & B`,
-      `${P}apakah <tanya>`,
-      `${P}quote`,
-      `${P}ramal`,
-      `${P}tarot [tanya]`,
-    ]),
-    ...seksi('🧰 USEFUL', [
-      `${P}hitung <expr>`,
-      `${P}cuaca <kota>`,
-      `${P}waktu`,
-      `${P}grupinfo  (hanya di grup)`,
-      `${P}member  (hanya di grup)`,
-      `${P}pilih a | b | c`,
-      `${P}umur YYYY-MM-DD`,
-      `${P}id`,
-    ]),
-    ...seksi('🍈 BLOX FRUITS', [
-      `${P}menubf  (menu Blox Fruits & akun Roblox)`,
-      `${P}bf <buah>  (cek nilai)`,
-      `${P}bflist  (daftar buah)`,
-      `${P}v4guide  (guide race V4)`,
-    ]),
-    ...seksi('🎨 STIKER', [
-      `${P}stiker  (kirim/reply gambar)`,
-      `${P}textstiker <teks | baris 2>`,
-      `${P}toimg  (reply stiker)`,
-    ]),
-    ...seksi('📥 DOWNLOADER', [
-      `${P}tiktok <link>`,
-      `${P}ig <link>`,
-      `${P}spotify <link>`,
-    ]),
-    ...seksi('🛡️ MODERASI · khusus admin', [
-      `${P}kick @user${badge('kick')}`,
-      `${P}ban @user${badge('ban')}`,
-      `${P}unban @user${badge('unban')}`,
-      `${P}tagall [pesan]${badge('tagall')}`,
-    ]),
-    ...seksi('⚙️ SISTEM', [
-      `${P}ping`,
-      `${P}info`,
-      `${P}menu`,
-      `${P}help [nama]  (contoh pemakaian)`,
-      `${P}profile  (profil kamu)`,
-    ]),
-    `╭───〖 📜 *ATURAN BOT* 〗`,
-    `├  ◦ Tanpa spasi: ${P}dadu, bukan ${P} dadu`,
-    `├  ◦ Cooldown: ${config.cooldownMs / 1000} detik / user`,
-    `├  ◦ Moderasi butuh akses admin`,
-    `├  ◦ Downloader: 1 antrean (maks 16 MB)`,
-    `╰───────────────────`,
-    '',
-    '🛡️ = _Khusus Admin Grup_',
-  ].join('\n')
-}
 
 const handlers = {
   menu: async ({ reply }) => {
-    try {
-      await reply(buildMenu())
-    } catch (err) {
-      console.error('Error di !menu:', err)
-    }
+    const globalSettings = getGlobalSettings()
+    const p = globalSettings.prefix || config.prefix || '.'
+
+    const menuText = `╭─────────────────────╮
+│  *Selamat malam 🌙!*
+│  Aku *Lop-bot*
+╰─────────────────────╯
+
+  ❖ *LOP-BOT · DASHBOARD* ❖
+━━━━━━━━━━━━━━━━━━━━
+
+╭───〖 *🎲 FUN* 〗
+├  ◦ ${p}dadu [sisi]
+├  ◦ ${p}koin
+├  ◦ ${p}slot
+├  ◦ ${p}jodoh A & B
+├  ◦ ${p}apakah <tanya>
+├  ◦ ${p}quote
+├  ◦ ${p}ramal
+├  ◦ ${p}tarot [tanya]
+╰───────────────────
+
+╭───〖 *🧰 USEFUL* 〗
+├  ◦ ${p}hitung <expr>
+├  ◦ ${p}cuaca <kota>
+├  ◦ ${p}waktu
+├  ◦ ${p}grupinfo  (hanya di grup)
+├  ◦ ${p}member  (hanya di grup)
+├  ◦ ${p}pilih a | b | c
+├  ◦ ${p}umur YYYY-MM-DD
+├  ◦ ${p}id
+╰───────────────────
+
+╭───〖 *🍈 BLOX FRUITS* 〗
+├  ◦ ${p}menubf  (menu Blox Fruits & akun Roblox)
+├  ◦ ${p}bf <buah>  (cek nilai)
+├  ◦ ${p}bflist  (daftar buah)
+├  ◦ ${p}v4guide  (guide race V4)
+╰───────────────────
+
+╭───〖 *🎨 STIKER* 〗
+├  ◦ ${p}stiker  (kirim/reply gambar)
+├  ◦ ${p}textstiker <teks | baris 2>
+├  ◦ ${p}toimg  (reply stiker)
+╰───────────────────
+
+╭───〖 *📥 DOWNLOADER* 〗
+├  ◦ ${p}tiktok <link>
+├  ◦ ${p}ig <link>
+├  ◦ ${p}spotify <link>
+╰───────────────────
+
+╭───〖 *🛡️ MODERASI · khusus admin* 〗
+├  ◦ ${p}kick @user 🛡️
+├  ◦ ${p}ban @user 🛡️
+├  ◦ ${p}unban @user 🛡️
+├  ◦ ${p}tagall [pesan] 🛡️
+╰───────────────────
+
+╭───〖 *⚙️ SISTEM* 〗
+├  ◦ ${p}ping
+├  ◦ ${p}info
+├  ◦ ${p}menu
+├  ◦ ${p}help [nama]  (contoh pemakaian)
+├  ◦ ${p}profile  (profil kamu)
+╰───────────────────
+
+╭───〖 📜 *ATURAN BOT* 〗
+├  ◦ Tanpa spasi: ${p}dadu, bukan ${p} dadu
+├  ◦ Cooldown: 3 detik / user
+├  ◦ Moderasi butuh akses admin
+├  ◦ Downloader: 1 antrean (maks 16 MB)
+╰───────────────────
+
+🛡️ = _Khusus Admin Grup_`
+
+    await reply(menuText)
   },
 
-  info: async ({ reply }) => {
-    try {
-      const jam = Math.floor(process.uptime() / 3600)
-      const menit = Math.floor((process.uptime() % 3600) / 60)
-      const ram = (process.memoryUsage().rss / 1024 / 1024).toFixed(1)
-      await reply(
-        [
-          `╭───〖 🤖 *${config.botName.toUpperCase()} INFO* 〗`,
-          `├  ◦ Uptime : ${jam} jam ${menit} menit`,
-          `├  ◦ RAM    : ${ram} MB`,
-          `╰───────────────────`,
-          '',
-          '_made with code by LopSalvatore_',
-        ].join('\n')
-      )
-    } catch (err) {
-      console.error('Error di !info:', err)
-    }
-  },
+  help: async (ctx) => {
+    return handlers.menu(ctx)
+  }
 }
 
-module.exports = { handlers, buildMenu }
+module.exports = { handlers }

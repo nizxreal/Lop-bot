@@ -1,0 +1,66 @@
+{
+  "global": {
+    "prefix": ".",
+    "botName": "Lop-Bot",
+    "cooldownMs": 3000,
+    "publicMode": true,
+    "onlyGroup": false,
+    "onlyPrivate": false,
+    "antiCall": true,
+    "autoRead": true,
+    "autoBio": false,
+    "menuCaption": "🤖 *BOT INFO*\n• Nama : $botname\n• Mode : $isPublic\n• Uptime : $uptime\n• Prefix : $prefix\n• Owner : $ownernumber\n\n👤 *USER INFO*\n• Nama : $pushname\n• Owner : $isOwner\n• Nomor : $usernumber\n\n📑 *KATEGORI*\n$category",
+    "autoMute": true,
+    "ownerNumber": "085878041275"
+  },
+  "users": {},
+  "groups": {
+    "120363412917710450@g.us": {
+      "welcomeEnabled": true,
+      "welcomeMsg": "Selamat datang @user di grup *{$group}*!",
+      "goodbyeEnabled": true,
+      "goodbyeMsg": "Selamat jalan @user!",
+      "antiLinkEnabled": false,
+      "antiLinkAction": "warn",
+      "allowedDomains": [
+        "github.com",
+        "youtube.com"
+      ],
+      "maxWarnings": 3,
+      "antiSpamEnabled": false,
+      "spamMaxMsgs": 5,
+      "spamWindowSec": 3,
+      "rules": "Belum ada aturan yang ditetapkan untuk grup ini.",
+      "scheduleOpen": null,
+      "scheduleClose": null,
+      "warnings": {}
+    }
+  },
+  "groupList": [
+    {
+      "id": "120363413172886392@g.us",
+      "subject": "Log Lop-bot",
+      "membersCount": 3
+    },
+    {
+      "id": "120363417639874404@g.us",
+      "subject": "Antek antek jokowi",
+      "membersCount": 7
+    },
+    {
+      "id": "120363428074505900@g.us",
+      "subject": "#urip urup murup",
+      "membersCount": 11
+    },
+    {
+      "id": "120363424720008225@g.us",
+      "subject": "ELIN LF GOESS BRRRR",
+      "membersCount": 16
+    },
+    {
+      "id": "120363412917710450@g.us",
+      "subject": "GRUP MABAR BLOX FRUITS 👾",
+      "membersCount": 115
+    }
+  ]
+}

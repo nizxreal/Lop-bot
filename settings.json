@@ -1,0 +1,10 @@
+{
+  "publicMode": true,
+  "onlyGroup": false,
+  "onlyPrivate": false,
+  "antiCall": true,
+  "autoRead": false,
+  "autoBio": false,
+  "menuCaption": "🤖 *BOT INFO*\n• Nama : $botname\n• Mode : $isPublic\n• Uptime : $uptime\n• Prefix : $prefix\n• Owner : $ownernumber\n\n👤 *USER INFO*\n• Nama : $pushname\n• Owner : $isOwner\n• Nomor : $usernumber\n\n📑 *KATEGORI*\n$category",
+  "banners": {}
+}
