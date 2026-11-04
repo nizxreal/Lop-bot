@@ -90,7 +90,7 @@ async function startBot() {
 
   if (!sock.authState.creds.registered) {
     const nomor = (await ask('Masukkan nomor WA kamu (contoh 628123456789): ')).replace(/\D/g, '')
-    await new Promise((r) => setTimeout(r, 3000))
+    await new Promise((r) => setTimeout(r, 8000))
     const kode = await sock.requestPairingCode(nomor)
     console.log(`\n🔑 Kode pairing kamu: ${kode}`)
     console.log('WhatsApp > Perangkat tertaut > Tautkan perangkat > Tautkan dengan nomor telepon\n')
@@ -144,6 +144,7 @@ async function startBot() {
       const jid = msg.key.remoteJid
       const isGroup = jid.endsWith('@g.us')
       const text = getText(msg).trim()
+      if (!isGroup && (await require('./daftar').handleDm({ sock, msg, jid, text }))) continue
       if (!text.startsWith(config.prefix)) continue
 
       if (!isGroup && !(msg.key.fromMe ? isSelfChat(jid) : [jid, msg.key.remoteJidAlt].filter(Boolean).map(getNumber).some((n) => config.owners.includes(n)))) continue

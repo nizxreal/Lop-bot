@@ -2,36 +2,55 @@ const fs = require('fs')
 const path = require('path')
 const config = require('./config')
 const { getNumber } = require('./group')
+const daftar = require('./daftar')
 
 const FOTO = path.join(__dirname, 'myprofile.jpg')
-
-// Untuk selain pemilik bot, nomor disamarkan (hanya 4 digit terakhir)
 const samarkan = (num) => (num.length > 4 ? '•••• ' + num.slice(-4) : num)
 
+// Kalimat acak untuk owner yang belum terdaftar
+const KALIMAT_OWNER = [
+  '👑 _Kamu pemilik bot. Akses penuh aktif, tidak perlu daftar._',
+  '⚡ _Sang pemilik terdeteksi. Semua fitur sudah terbuka._',
+  '🔥 _Owner tidak perlu antre. Gas terus, Bos._',
+]
+const pilihKalimat = () => KALIMAT_OWNER[Math.floor(Math.random() * KALIMAT_OWNER.length)]
+
 const handlers = {
-  profile: async ({ msg, jid, reply, isAdmin, sock }) => {
+  profile: async ({ msg, jid, isGroup, isOwner, isAdmin, reply, sock }) => {
     try {
-      const pemilik = msg.key.fromMe
-      const senderJid = pemilik ? sock.user.id : (msg.key.participant || jid)
+      const senderJid = msg.key.fromMe ? sock.user.id : (msg.key.participant || jid)
       const num = getNumber(senderJid)
-      const isOwner = pemilik || config.owners.includes(num)
       const pushName = msg.pushName || 'Pengguna'
 
       let role = '🌐 Member Biasa'
       if (isOwner) role = '👑 Owner Lop-Bot'
       else if (isAdmin) role = '🛡️ Admin Grup'
 
-      const teks = [
+      const tampilNomor = isOwner && !isGroup ? num : samarkan(num)
+
+      const baris = [
         '👤 *USER PROFILE · LOP-BOT*',
         '──────────────────',
         `📌 *Nama:* ${pushName}`,
-        `📞 *Nomor:* ${pemilik ? num : samarkan(num)}`,
+        `📞 *Nomor:* ${tampilNomor}`,
         `🏅 *Role:* ${role}`,
         '──────────────────',
-      ].join('\n')
+      ]
 
-      // Foto hanya dikirim untuk akun pemilik bot (pesan dari akunmu sendiri)
-      if (pemilik && fs.existsSync(FOTO)) {
+      const row = daftar.getRegistered(num)
+      if (row) {
+        const fresh = await daftar.segarkan(row)
+        baris.push(daftar.kartuRegistrasi(fresh), '──────────────────')
+      } else if (isOwner) {
+        baris.push(pilihKalimat(), '──────────────────')
+      } else {
+        baris.push(`_Belum terdaftar. Chat pribadi bot lalu ketik ${config.prefix}daftar._`, '──────────────────')
+      }
+
+      const teks = baris.join('\n')
+
+      // Foto pribadi hanya untuk owner
+      if (isOwner && fs.existsSync(FOTO)) {
         await sock.sendMessage(jid, { image: fs.readFileSync(FOTO), caption: teks }, { quoted: msg })
       } else {
         await reply(teks)

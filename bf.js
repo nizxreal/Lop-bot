@@ -8,14 +8,24 @@ const kotak = (judul, baris) =>
   [`╭───〖 ${judul} 〗`, ...baris.map((b) => `├  ◦ ${b}`), '╰───────────────────'].join('\n')
 
 const menuBf = () =>
-  kotak('🍈 *BLOX FRUITS*', [
-    `${P}bf <buah>  → cek nilai buah`,
-    `${P}bflist  → daftar semua buah`,
-    `${P}v4guide  → gambar guide race V4`,
-    `${P}menubf  → tampilkan menu ini`,
+  [
+    kotak('🍈 *BLOX FRUITS*', [
+      `${P}bf <buah>  → cek nilai buah`,
+      `${P}bflist  → daftar semua buah`,
+      `${P}v4guide  → guide race V4 (gambar)`,
+      `${P}menubf  → tampilkan menu ini`,
+      '',
+      '_Nilai bersifat lokal, bukan harga real-time._',
+    ]),
     '',
-    '_Nilai bersifat lokal, bukan harga real-time._',
-  ])
+    kotak('📝 *AKUN ROBLOX*', [
+      `${P}daftar  → daftar akun Roblox (chat pribadi)`,
+      `${P}profile  → lihat profil kamu`,
+      `${P}daftarhapus  → hapus data pendaftaran`,
+      '',
+      '_Pendaftaran hanya lewat chat pribadi._',
+    ]),
+  ].join('\n')
 
 const listBf = () => {
   const baris = []
@@ -30,7 +40,6 @@ const listBf = () => {
 }
 
 const handlers = {
-  // .bf tanpa nama buah menampilkan menu, dengan nama buah langsung mencari nilainya
   bf: async (ctx) => {
     try {
       if (!ctx.args.length) return ctx.reply(menuBf())

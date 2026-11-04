@@ -18,3 +18,5 @@ tes.png
 # Log
 *.log
 myprofile.jpg
+data.db
+data.db-journal
