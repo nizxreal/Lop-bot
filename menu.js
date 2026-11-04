@@ -57,6 +57,7 @@ function buildMenu() {
       `${P}umur YYYY-MM-DD`,
       `${P}id`,
       `${P}value <nama_buah>`,
+      `${P}profile`,
     ]),
     ...seksi('🎨 STIKER', [
       `${P}stiker  (kirim/reply gambar)`,

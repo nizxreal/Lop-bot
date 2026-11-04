@@ -25,7 +25,8 @@ Object.assign(
   require('./useful').handlers,
   require('./shutdown').handlers,
   require('./flush').handlers,
-  require('./value').handlers
+  require('./value').handlers,
+  require('./profile').handlers
 )
 const { loadBanned, getNumber } = groupModule
 
@@ -164,7 +165,7 @@ async function startBot() {
       }
 
       const [rawCmd, ...args] = text.slice(config.prefix.length).split(/\s+/)
-      const cmd = rawCmd.toLowerCase(); console.log('[CMD]', cmd)
+      const cmd = rawCmd.toLowerCase()
       const handler = handlers[cmd]
       if (!handler) continue
 

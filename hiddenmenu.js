@@ -19,7 +19,7 @@ const DAFTAR = [
   ['🧰 USEFUL', [
     ['hitung', 'hitung <expr>'], ['cuaca', 'cuaca <kota>'], ['waktu', 'waktu'],
     ['grupinfo', 'grupinfo'], ['member', 'member'], ['pilih', 'pilih <a | b | c>'],
-    ['umur', 'umur <YYYY-MM-DD>'], ['id', 'id'], ['value', 'value <nama_buah>'],
+    ['umur', 'umur <YYYY-MM-DD>'], ['id', 'id'], ['value', 'value <nama_buah>'], ['profile', 'profile'],
   ]],
   ['🎨 STIKER', [
     ['stiker', 'stiker'], ['textstiker', 'textstiker <teks>'], ['toimg', 'toimg (balas stiker)'],
