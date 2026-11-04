@@ -56,7 +56,6 @@ function buildMenu() {
       `${P}pilih a | b | c`,
       `${P}umur YYYY-MM-DD`,
       `${P}id`,
-      `${P}value <nama_buah>`,
       `${P}profile`,
     ]),
     ...seksi('🎨 STIKER', [
@@ -68,6 +67,11 @@ function buildMenu() {
       `${P}tiktok <link>`,
       `${P}ig <link>`,
       `${P}spotify <link>`,
+    ]),
+    ...seksi('🍈 BLOX FRUITS', [
+      `${P}menubf  (menu Blox Fruits)`,
+      `${P}bf <buah>  (cek nilai)`,
+      `${P}bflist  (daftar buah)`,
     ]),
     ...seksi('🛡️ MODERASI · khusus admin', [
       `${P}kick @user${badge('kick')}`,

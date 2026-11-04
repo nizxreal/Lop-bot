@@ -25,8 +25,8 @@ Object.assign(
   require('./useful').handlers,
   require('./shutdown').handlers,
   require('./flush').handlers,
-  require('./value').handlers,
-  require('./profile').handlers
+  require('./value').handlers, require('./bf').handlers,
+  require('./profile').handlers, require('./v4guide').handlers
 )
 const { loadBanned, getNumber } = groupModule
 

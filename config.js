@@ -1,5 +1,6 @@
 module.exports = {
   prefix: '.',
+  v4SpreadsheetUrl: 'LINK_SPREADSHEET_KAMU',
   botName: 'Lop-bot',
 
   // Nomor owner selain kamu (format 62 tanpa +). Ganti dengan nomor asli.
@@ -15,6 +16,8 @@ module.exports = {
   // Level izin per perintah: 'all', 'admin', atau 'owner'
   // Perintah yang tidak ada di sini otomatis 'all'
   permissions: {
+    flush: 'owner',
+    shutdown: 'owner',
     hiddenmenu: 'owner',
     tiktok: 'all',
     ig: 'all',

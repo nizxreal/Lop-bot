@@ -3,19 +3,13 @@ const { exec } = require('child_process')
 const handlers = {
   shutdown: async ({ reply, isOwner }) => {
     try {
-      if (!isOwner) {
-        return reply('Ngapain ngetik .shutdown? Situ bukan owner, nggak usah sok asik nyuruh aku mati 😒')
-      }
+      if (!isOwner) return
 
-      await reply('Baik Bos, Lop-bot mematikan sistem secara total. Sampai jumpa! 👋')
+      await reply('🛑 *LOP-BOT DIMATIKAN*\nBot berhenti. Untuk menyalakan lagi, buka Termux dan jalankan: pm2 start lopbot')
 
-      const command = 'pm2 flush && pm2 kill'
-
-      exec(command, (err) => {
-        if (err) {
-          console.error('Gagal mengeksekusi shutdown:', err)
-          process.exit(0)
-        }
+      // Hanya menghentikan Lop-Bot, proses pm2 lain tidak ikut mati
+      exec('pm2 stop lopbot', (err) => {
+        if (err) console.error('Gagal menghentikan Lop-Bot:', err.message)
       })
     } catch (err) {
       console.error('Error di !shutdown:', err)
