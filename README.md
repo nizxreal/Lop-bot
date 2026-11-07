@@ -21,34 +21,37 @@ npm -v
 
 ---
 
-## 2. Salin Folder / Clone Project
+## 2. Clone & Jalankan Skrip Instalasi
+
+Salin skrip **install.sh** ini ke HP kamu (tools: `cat > install.sh <<'EOS' ... EOS`).
+
+Jalankan skripnya:
 
 ```bash
-termux-setup-storage
-cp -r /sdcard/Lop-bot ~/Lop-bot
-cd ~/Lop-bot
+chmod +x install.sh
+./install.sh
 ```
+
+Skrip akan melakukan:
+- clone repository ke folder `Lop-bot`
+- install dependencies (`npm install`)
+- buat `custom_menu.json` kosong
+- menulis `run.sh` untuk menjalankan server
 
 ---
 
-## 3. Install Dependencies
+## 3. Jalankan Server Utama
 
 ```bash
-npm install
+cd Lop-bot
+./run.sh
 ```
 
----
-
-## 4. Jalankan Server Utama
-
-```bash
-npm start
-```
 Server akan aktif di `http://localhost:3000`.
 
 ---
 
-## 5. Cara Menautkan Nomor (Pairing Code)
+## 4. Cara Menautkan Nomor (Pairing Code)
 
 1. Buka browser di HP kamu (Chrome/Kiwi), buka: `http://localhost:3000`.
 2. Klik tombol **[+]** (Floating Action Button) di pojok kanan bawah.
@@ -58,6 +61,31 @@ Server akan aktif di `http://localhost:3000`.
 6. Buka WhatsApp yang ingin dijadikan bot: **Perangkat Tertaut > Tautkan Perangkat > Tautkan dengan nomor telepon**.
 7. Masukkan kode yang muncul di dashboard tadi.
 8. Bot akan otomatis online dan sesi disimpan di folder `auth_Bot1`.
+
+---
+
+## 5. Mengubah Menu Lokal (Tanpa Akses Open-Source)
+
+Untuk mengubah antarmuka menu di HP **tempat kamu instal server** (tanpa mengunduh ulang kode lengkap), edit file:
+
+```bash
+Lop-bot/custom_menu.json
+```
+
+File ini berisi array JSON dari objek menu:
+
+```json
+[
+  { "name": "start", "func": "req.reply('Halo!')", "desc": "Mulai bot" },
+  { "name": "help", "func": "req.reply('Bantuan')", "desc": "Lihat perintah" }
+]
+```
+
+- **name**: nama perintah bot (seperti `!start`).
+- **func**: string JavaScript yang akan dieksekusi saat pengguna mengetik perintah (variabel `req` menyediakan method `reply`, `isGroup`, `sender`).
+- **desc**: deskripsi yang ditampilkan di UI (seperti Main Menu).
+
+Tiap kali kamu merubah `custom_menu.json`, buka dashboard di HP **mana saja** untuk sinkronisasi. Hasil perubahan akan langsung muncul di UI Main Menu di mana pun kamu akses dashboardnya.
 
 ---
 

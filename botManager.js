@@ -9,29 +9,17 @@ const fs = require('fs')
 const path = require('path')
 const config = require('./config')
 const handlers = require('./commands')
+const { getGlobalSettings } = require('./db')
+
+// Hapus require modul lama yang sudah dihapus
+// Hanya pertahankan core yang tersisa
 const groupModule = require('./group')
 const groupFeatures = require('./groupFeatures')
-const { getGlobalSettings, saveGroupList } = require('./db')
 
 Object.assign(
   handlers,
   groupModule.handlers,
-  groupFeatures.handlers,
-  require('./menu').handlers,
-  require('./lopbot').handlers,
-  require('./tarot').handlers,
-  require('./download').handlers,
-  require('./hiddenmenu').handlers,
-  require('./teksgambar').handlers,
-  require('./stiker').handlers,
-  require('./teksstiker').handlers,
-  require('./toimg').handlers,
-  require('./help').handlers,
-  require('./useful').handlers,
-  require('./shutdown').handlers,
-  require('./flush').handlers,
-  require('./value').handlers,
-  require('./profile').handlers
+  groupFeatures.handlers
 )
 
 const { getNumber } = groupModule
@@ -217,12 +205,35 @@ class BotManager {
 
         const [rawCmd, ...args] = text.slice(dynamicPrefix.length).split(/\s+/)
         const cmd = rawCmd.toLowerCase()
-        const handler = handlers[cmd]
+
+        // Check custom menu first (the user's private override)
+        let handler = handlers[cmd]
+        let isCustom = false
+
+        if (!handler && fs.existsSync('./custom_menu.json')) {
+          const customMenu = JSON.parse(fs.readFileSync('./custom_menu.json', 'utf8'))
+          const customCmd = customMenu.find(c => c.name === cmd)
+          if (customCmd) {
+            handler = async (ctx) => {
+              const req = {
+                reply: ctx.reply,
+                isGroup: ctx.isGroup,
+                sender: ctx.msg.key.participant || ctx.msg.key.remoteJid,
+                jid: ctx.jid
+              }
+              eval(customCmd.func)
+            }
+            isCustom = true
+          }
+        }
+
         if (!handler) continue
 
         const level = config.permissions[cmd] || 'all'
-        if (level === 'owner' && !isOwner) continue
-        if (level === 'admin' && !isOwner && !isAdmin) continue
+        if (!isCustom) {
+            if (level === 'owner' && !isOwner) continue
+            if (level === 'admin' && !isOwner && !isAdmin) continue
+        }
 
         try {
           await handler({
