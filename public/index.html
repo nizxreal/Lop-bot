@@ -8,15 +8,11 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: #0b0c10; color: #f3f4f6; font-size: 14px; padding-bottom: 70px; }
     header { display: flex; align-items: center; justify-content: space-between; background: #121318; padding: 12px 16px; border-bottom: 1px solid #1f222e; position: sticky; top: 0; z-index: 50; }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .menu-btn { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
     .title { font-size: 16px; font-weight: 700; color: #fff; }
-    .header-right { display: flex; align-items: center; gap: 12px; }
-    .logout-btn { border: 1px solid #374151; background: transparent; color: #d1d5db; border-radius: 20px; padding: 4px 12px; font-size: 12px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .logout-btn { border: 1px solid #374151; background: transparent; color: #d1d5db; border-radius: 20px; padding: 4px 12px; font-size: 12px; cursor: pointer; }
 
-    /* Nav Tabs */
     .nav-tabs { display: flex; background: #121318; border-bottom: 1px solid #1f222e; overflow-x: auto; }
-    .nav-tab { flex: 1; min-width: 80px; text-align: center; padding: 12px 8px; font-size: 12px; color: #9ca3af; border-bottom: 2px solid transparent; cursor: pointer; font-weight: 500; white-space: nowrap; }
+    .nav-tab { flex: 1; min-width: 80px; text-align: center; padding: 12px 8px; font-size: 12px; color: #9ca3af; border-bottom: 2px solid transparent; cursor: pointer; font-weight: 500; }
     .nav-tab.active { color: #22c55e; border-bottom-color: #22c55e; }
 
     .container { max-width: 500px; margin: 0 auto; padding: 16px; }
@@ -24,30 +20,27 @@
     .section.active { display: block; }
 
     .card { background: #16181f; border: 1px solid #232733; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
-    .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-    .card-title { font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
-    .card-subtitle { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+    .card-title { font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .card-subtitle { font-size: 11px; color: #9ca3af; margin-bottom: 12px; }
     
     .badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
-    .badge-green { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
-    .badge-blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
-    .badge-gray { background: #27272a; color: #a1a1aa; border: 1px solid #3f3f46; }
+    .badge-green { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+    .badge-blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
+    .badge-gray { background: #27272a; color: #a1a1aa; }
 
-    .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1f222e; font-size: 13px; }
-    .info-row:last-child { border-bottom: none; }
-    .info-label { color: #9ca3af; }
-    .info-value { color: #f3f4f6; font-weight: 500; }
+    .bot-item { background: #0c0d12; border: 1px solid #1f222e; border-radius: 10px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .bot-info-name { font-weight: 600; color: #fff; font-size: 13px; }
+    .bot-info-sub { font-size: 11px; color: #9ca3af; margin-top: 2px; }
 
     .pairing-box { background: #0c0d12; border: 1px dashed #22c55e; border-radius: 8px; padding: 14px; text-align: center; margin-top: 10px; }
-    .pairing-code { font-family: monospace; font-size: 22px; font-weight: 700; color: #22c55e; letter-spacing: 4px; margin-top: 4px; }
+    .pairing-code { font-family: monospace; font-size: 20px; font-weight: 700; color: #22c55e; letter-spacing: 4px; }
 
     .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1f222e; }
     .toggle-row:last-child { border-bottom: none; }
-    .toggle-info { max-width: 80%; }
     .toggle-title { font-size: 13px; font-weight: 600; color: #e5e7eb; }
-    .toggle-desc { font-size: 11px; color: #9ca3af; margin-top: 2px; line-height: 1.3; }
+    .toggle-desc { font-size: 11px; color: #9ca3af; margin-top: 2px; }
 
-    .switch { position: relative; display: inline-block; width: 40px; height: 22px; flex-shrink: 0; }
+    .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #374151; transition: .2s; border-radius: 22px; }
     .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .2s; border-radius: 50%; }
@@ -57,400 +50,257 @@
     .form-group { margin-bottom: 12px; }
     .form-label { display: block; font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
     .input-text, select, textarea { width: 100%; background: #0c0d12; border: 1px solid #232733; color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 13px; outline: none; }
-    .input-text:focus, select:focus, textarea:focus { border-color: #22c55e; }
-    textarea { height: 90px; resize: vertical; font-family: monospace; }
-
-    .placeholders { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
-    .chip { background: #1f222e; color: #22c55e; font-size: 11px; font-family: monospace; padding: 4px 8px; border-radius: 6px; cursor: pointer; border: 1px solid rgba(34, 197, 94, 0.2); }
+    textarea { height: 90px; resize: vertical; }
 
     .btn-submit { background: #22c55e; color: #000; font-weight: 600; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 10px; }
-    .btn-danger { background: #ef4444; color: #fff; font-weight: 600; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; font-size: 12px; margin-top: 6px; }
+    .btn-icon { background: none; border: none; color: #9ca3af; cursor: pointer; padding: 5px; font-size: 16px; }
+    .btn-icon:hover { color: #fff; }
+    .btn-danger { color: #ef4444; }
 
-    /* Floating Action Button (FAB) */
-    .fab { position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 24px; font-weight: bold; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); cursor: pointer; text-decoration: none; }
-    .fab-badge { position: absolute; top: -2px; left: -2px; background: #ef4444; color: #fff; font-size: 10px; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .fab { position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 24px; font-weight: bold; cursor: pointer; }
+    
+    #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: #16181f; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; border: 1px solid #232733; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="header-left">
-      <div class="title" id="pageTitle">Dashboard</div>
-    </div>
-    <div class="header-right">
-      <button class="logout-btn" onclick="location.reload()">↻ Muat Ulang</button>
-    </div>
+    <div class="title" id="pageTitle">Terminal</div>
+    <button class="logout-btn" onclick="refreshData()">↻ Refresh</button>
   </header>
 
   <nav class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('dashboard', this)">Dashboard</div>
-    <div class="nav-tab" onclick="switchTab('terminal', this)">Terminal</div>
+    <div class="nav-tab active" onclick="switchTab('terminal', this)">Terminal</div>
     <div class="nav-tab" onclick="switchTab('settings', this)">Settings</div>
-    <div class="nav-tab" onclick="switchTab('groups', this)">Banner & Grup</div>
+    <div class="nav-tab" onclick="switchTab('groups', this)">Grup</div>
   </nav>
 
   <div class="container">
 
-    <!-- TAB 1: DASHBOARD -->
-    <div id="tab-dashboard" class="section active">
+    <!-- TAB 1: TERMINAL (Slot Bot) -->
+    <div id="tab-terminal" class="section active">
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Status Layanan</div>
-            <div class="card-subtitle">Status komponen server lokal Termux</div>
-          </div>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Bot Engine</span>
-          <span class="badge badge-blue">Aktif (Node.js)</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Koneksi WhatsApp</span>
-          <span id="waStatusBadge" class="badge badge-gray">Memeriksa...</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Localhost Port</span>
-          <span class="badge badge-green">:3000 (Ready)</span>
-        </div>
+        <div class="card-title">Slot Bot</div>
+        <div class="card-subtitle" id="slotInfo">Memuat data bot...</div>
+        <div id="botList"></div>
       </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Aksi Cepat</div>
-            <div class="card-subtitle">Pintasan modul utama</div>
+      
+      <div id="pairingArea" style="display: none;">
+        <div class="card">
+          <div class="card-title">Koneksi Bot: <span id="pairingTarget">Bot1</span></div>
+          <div class="card-subtitle">Masukkan kode ini di WhatsApp Perangkat Tertaut.</div>
+          <div class="pairing-box">
+            <div class="pairing-code" id="pairCode">---- - ----</div>
           </div>
-        </div>
-        <button class="btn-submit" onclick="switchTab('terminal', document.querySelectorAll('.nav-tab')[1])">Buka Koneksi & Pairing</button>
-        <button class="btn-submit" style="background:#27272a; color:#fff; margin-top:8px;" onclick="switchTab('settings', document.querySelectorAll('.nav-tab')[2])">Pengaturan Fitur Bot</button>
-      </div>
-    </div>
-
-    <!-- TAB 2: TERMINAL / PAIRING -->
-    <div id="tab-terminal" class="section">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Koneksi Bot</div>
-            <div class="card-subtitle">Status pairing dan sesi Baileys</div>
-          </div>
-          <span id="termStatusBadge" class="badge badge-blue">Pairing / Siap</span>
-        </div>
-
-        <div class="info-row">
-          <span class="info-label">Nomor Bot</span>
-          <span class="info-value" id="termBotNum">Belum login</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Server</span>
-          <span class="info-value">Localhost (Termux)</span>
-        </div>
-
-        <div class="pairing-box">
-          <div style="font-size:11px; color:#9ca3af;">Kode Pairing Terakhir</div>
-          <div class="pairing-code" id="termPairingCode">---- - ----</div>
-          <div style="font-size:10px; color:#6b7280; margin-top:4px;">Masukkan di WA: Perangkat Tertaut > Tautkan dengan nomor</div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: SETTINGS -->
+    <!-- TAB 2: SETTINGS -->
     <div id="tab-settings" class="section">
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Fitur Bot</div>
-            <div class="card-subtitle">Aktifkan atau nonaktifkan perilaku bot</div>
-          </div>
-        </div>
-
+        <div class="card-title">Fitur Bot</div>
         <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Public Mode</div>
-            <div class="toggle-desc">Semua orang dapat menggunakan bot.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="publicMode"><span class="slider"></span></label>
+          <div><div class="toggle-title">Public Mode</div><div class="toggle-desc">Bot bisa dipakai semua orang.</div></div>
+          <label class="switch"><input type="checkbox" id="publicMode" onchange="saveSettings()"><span class="slider"></span></label>
         </div>
-
         <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Hanya Grup</div>
-            <div class="toggle-desc">Aktifkan agar bot hanya merespon di grup.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="onlyGroup"><span class="slider"></span></label>
+          <div><div class="toggle-title">Hanya Grup</div><div class="toggle-desc">Bot hanya merespons di grup.</div></div>
+          <label class="switch"><input type="checkbox" id="onlyGroup" onchange="saveSettings()"><span class="slider"></span></label>
         </div>
-
         <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Hanya Private</div>
-            <div class="toggle-desc">Aktifkan agar bot hanya merespon di chat pribadi.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="onlyPrivate"><span class="slider"></span></label>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Anti Call</div>
-            <div class="toggle-desc">Tolak panggilan masuk otomatis.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="antiCall"><span class="slider"></span></label>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Auto Read</div>
-            <div class="toggle-desc">Tandai pesan dibaca otomatis.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="autoRead"><span class="slider"></span></label>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Auto Bio</div>
-            <div class="toggle-desc">Perbarui bio bot otomatis.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="autoBio"><span class="slider"></span></label>
+          <div><div class="toggle-title">Anti Call</div><div class="toggle-desc">Tolak panggilan otomatis.</div></div>
+          <label class="switch"><input type="checkbox" id="antiCall" onchange="saveSettings()"><span class="slider"></span></label>
         </div>
       </div>
-
+      
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Template & Identitas</div>
-            <div class="card-subtitle">Ubah variabel nama, prefix, dan caption</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Prefix Command</label>
-          <input type="text" class="input-text" id="prefix" placeholder=".">
-        </div>
+        <div class="card-title">Identitas</div>
         <div class="form-group">
           <label class="form-label">Nama Bot</label>
-          <input type="text" class="input-text" id="botName" placeholder="Lop-Bot">
+          <input type="text" class="input-text" id="botName">
         </div>
         <div class="form-group">
-          <label class="form-label">Nomor Owner</label>
-          <input type="text" class="input-text" id="ownerNumber" placeholder="628xxxxxxxx">
+          <label class="form-label">Prefix</label>
+          <input type="text" class="input-text" id="prefix">
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Caption Menu</label>
-          <textarea id="menuCaption"></textarea>
-          <div class="placeholders">
-            <span class="chip" onclick="insertTag('$pushname')">$pushname</span>
-            <span class="chip" onclick="insertTag('$botname')">$botname</span>
-            <span class="chip" onclick="insertTag('$prefix')">$prefix</span>
-            <span class="chip" onclick="insertTag('$uptime')">$uptime</span>
-            <span class="chip" onclick="insertTag('$ownernumber')">$ownernumber</span>
-          </div>
-        </div>
-
-        <button class="btn-submit" onclick="saveSettings()">Simpan Pengaturan</button>
+        <button class="btn-submit" onclick="saveSettings()">Simpan</button>
       </div>
     </div>
 
-    <!-- TAB 4: BANNER & GROUPS -->
+    <!-- TAB 3: GROUPS -->
     <div id="tab-groups" class="section">
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Pilih Grup</div>
-            <div class="card-subtitle">Banner & setting berlaku untuk grup yang dipilih</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <select id="groupSelect" onchange="loadSelectedGroup()">
-            <option value="">-- Memuat daftar grup... --</option>
-          </select>
-        </div>
+        <div class="card-title">Pilih Grup</div>
+        <select id="groupSelect" class="input-text" onchange="loadGroupSettings()"></select>
       </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Banner Grup</div>
-            <div class="card-subtitle">Gunakan URL JPG/PNG/WEBP langsung</div>
+      <div id="groupSettingsArea" style="display: none;">
+        <div class="card">
+          <div class="card-title">Welcome & Goodbye</div>
+          <div class="toggle-row">
+            <div class="toggle-title">Welcome Aktif</div>
+            <label class="switch"><input type="checkbox" id="welcomeEnabled"><span class="slider"></span></label>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">URL Gambar Banner</label>
-          <input type="text" class="input-text" id="bannerUrl" placeholder="https://files.catbox.moe/k93y9i.jpg">
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Welcome & Goodbye</div>
-            <div class="card-subtitle">Pesan sambutan otomatis anggota grup</div>
+          <input type="text" class="input-text" id="welcomeMsg" placeholder="Pesan Welcome">
+          <div class="toggle-row" style="margin-top:10px">
+            <div class="toggle-title">Goodbye Aktif</div>
+            <label class="switch"><input type="checkbox" id="goodbyeEnabled"><span class="slider"></span></label>
           </div>
+          <input type="text" class="input-text" id="goodbyeMsg" placeholder="Pesan Goodbye">
+          <button class="btn-submit" onclick="saveGroupSettings()">Simpan Grup</button>
         </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Pesan Welcome</div>
-            <div class="toggle-desc">Kirim saat anggota baru masuk.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="welcomeEnabled"><span class="slider"></span></label>
-        </div>
-        <div class="form-group">
-          <input type="text" class="input-text" id="welcomeMsg" placeholder="Selamat datang @user!">
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-title">Pesan Goodbye</div>
-            <div class="toggle-desc">Kirim saat anggota keluar grup.</div>
-          </div>
-          <label class="switch"><input type="checkbox" id="goodbyeEnabled"><span class="slider"></span></label>
-        </div>
-        <div class="form-group">
-          <input type="text" class="input-text" id="goodbyeMsg" placeholder="Selamat jalan @user!">
-        </div>
-
-        <button class="btn-submit" onclick="saveGroupSettings()">Simpan Konfigurasi Grup</button>
       </div>
     </div>
 
   </div>
 
-  <!-- FAB Bottom Right -->
-  <a href="#tab-dashboard" class="fab" onclick="switchTab('dashboard', document.querySelectorAll('.nav-tab')[0])">
-    <span class="fab-badge">1</span>
-    +
-  </a>
+  <div class="fab" onclick="showAddBot()">+</div>
+
+  <div id="modal">
+    <div class="modal-content">
+      <div class="card-title">Tambah Bot Baru</div>
+      <div class="form-group">
+        <label class="form-label">Nama Slot (Contoh: Bot1)</label>
+        <input type="text" id="newBotId" class="input-text" value="Bot1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nomor WhatsApp (Contoh: 628xxx)</label>
+        <input type="text" id="newBotPhone" class="input-text" placeholder="628xxxxxxxx">
+      </div>
+      <button class="btn-submit" onclick="connectBot()">Hubungkan</button>
+      <button class="btn-submit" style="background:#27272a; color:#fff" onclick="document.getElementById('modal').style.display='none'">Batal</button>
+    </div>
+  </div>
 
   <script>
-    function switchTab(tabId, el) {
+    function switchTab(id, el) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
-      document.getElementById('tab-' + tabId).classList.add('active');
-      if (el) el.classList.add('active');
-      document.getElementById('pageTitle').innerText = tabId.charAt(0).toUpperCase() + tabId.slice(1);
-
-      if (tabId === 'groups') loadGroupDropdown();
-      if (tabId === 'settings') loadSettings();
+      document.getElementById('tab-' + id).classList.add('active');
+      el.classList.add('active');
+      document.getElementById('pageTitle').innerText = id.charAt(0).toUpperCase() + id.slice(1);
+      if(id === 'groups') loadGroups();
+      if(id === 'settings') loadSettings();
     }
 
-    function insertTag(tag) {
-      const area = document.getElementById('menuCaption');
-      area.value += ' ' + tag;
+    async function refreshData() {
+      const res = await fetch('/api/bots');
+      const { data } = await res.json();
+      const list = document.getElementById('botList');
+      list.innerHTML = '';
+      document.getElementById('slotInfo').innerText = `${data.length} slot aktif.`;
+      
+      let hasPairing = false;
+      data.forEach(bot => {
+        const item = document.createElement('div');
+        item.className = 'bot-item';
+        const isOnline = bot.status === 'connected';
+        item.innerHTML = `
+          <div>
+            <div class="bot-info-name">${bot.id} ${isOnline ? '<span class="badge badge-green">Online</span>' : '<span class="badge badge-gray">'+bot.status+'</span>'}</div>
+            <div class="bot-info-sub">${bot.phone || 'Belum tertaut'}</div>
+          </div>
+          <div>
+            <button class="btn-icon" onclick="restartBot('${bot.id}')">↻</button>
+            <button class="btn-icon btn-danger" onclick="logoutBot('${bot.id}')">🗑</button>
+          </div>
+        `;
+        list.appendChild(item);
+        if(bot.status === 'pairing' && bot.pairingCode) {
+          hasPairing = true;
+          document.getElementById('pairingTarget').innerText = bot.id;
+          document.getElementById('pairCode').innerText = bot.pairingCode;
+        }
+      });
+      document.getElementById('pairingArea').style.display = hasPairing ? 'block' : 'none';
+    }
+
+    function showAddBot() { document.getElementById('modal').style.display = 'flex'; }
+
+    async function connectBot() {
+      const botId = document.getElementById('newBotId').value;
+      const phone = document.getElementById('newBotPhone').value;
+      await fetch('/api/bots/connect', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ botId, phone })
+      });
+      document.getElementById('modal').style.display = 'none';
+      setTimeout(refreshData, 2000);
+    }
+
+    async function restartBot(botId) {
+      await fetch('/api/bots/restart', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ botId }) });
+      refreshData();
+    }
+
+    async function logoutBot(botId) {
+      if(!confirm('Hapus sesi '+botId+'?')) return;
+      await fetch('/api/bots/logout', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ botId }) });
+      refreshData();
     }
 
     async function loadSettings() {
-      try {
-        const res = await fetch('/api/settings');
-        const { data } = await res.json();
-        if (!data) return;
-        document.getElementById('publicMode').checked = !!data.publicMode;
-        document.getElementById('onlyGroup').checked = !!data.onlyGroup;
-        document.getElementById('onlyPrivate').checked = !!data.onlyPrivate;
-        document.getElementById('antiCall').checked = !!data.antiCall;
-        document.getElementById('autoRead').checked = !!data.autoRead;
-        document.getElementById('autoBio').checked = !!data.autoBio;
-        document.getElementById('prefix').value = data.prefix || '.';
-        document.getElementById('botName').value = data.botName || 'Lop-Bot';
-        document.getElementById('ownerNumber').value = data.ownerNumber || '';
-        document.getElementById('bannerUrl').value = data.bannerUrl || '';
-        document.getElementById('menuCaption').value = data.menuCaption || '';
-      } catch (e) {}
+      const res = await fetch('/api/settings');
+      const { data } = await res.json();
+      document.getElementById('publicMode').checked = !!data.publicMode;
+      document.getElementById('onlyGroup').checked = !!data.onlyGroup;
+      document.getElementById('antiCall').checked = !!data.antiCall;
+      document.getElementById('botName').value = data.botName || '';
+      document.getElementById('prefix').value = data.prefix || '';
     }
 
     async function saveSettings() {
-      const payload = {
+      const body = {
         publicMode: document.getElementById('publicMode').checked,
         onlyGroup: document.getElementById('onlyGroup').checked,
-        onlyPrivate: document.getElementById('onlyPrivate').checked,
         antiCall: document.getElementById('antiCall').checked,
-        autoRead: document.getElementById('autoRead').checked,
-        autoBio: document.getElementById('autoBio').checked,
-        prefix: document.getElementById('prefix').value,
         botName: document.getElementById('botName').value,
-        ownerNumber: document.getElementById('ownerNumber').value,
-        bannerUrl: document.getElementById('bannerUrl').value,
-        menuCaption: document.getElementById('menuCaption').value
+        prefix: document.getElementById('prefix').value
       };
-      const res = await fetch('/api/settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      alert(data.message || 'Pengaturan tersimpan!');
+      await fetch('/api/settings', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
     }
 
-    async function loadGroupDropdown() {
+    async function loadGroups() {
+      const res = await fetch('/api/groups');
+      const { data } = await res.json();
       const sel = document.getElementById('groupSelect');
-      sel.innerHTML = '<option value="">-- Memuat grup... --</option>';
-      try {
-        const res = await fetch('/api/groups');
-        const { data } = await res.json();
-        if (data && data.length > 0) {
-          sel.innerHTML = '<option value="">-- Pilih Grup --</option>';
-          data.forEach(g => {
-            const opt = document.createElement('option');
-            opt.value = g.id;
-            opt.textContent = `${g.subject} (${g.membersCount} anggota)`;
-            sel.appendChild(opt);
-          });
-        } else {
-          sel.innerHTML = '<option value="">(Belum ada data grup dari Bot)</option>';
-        }
-      } catch (e) {
-        sel.innerHTML = '<option value="">Gagal memuat grup</option>';
-      }
+      sel.innerHTML = '<option value="">-- Pilih Grup --</option>';
+      data.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.textContent = g.subject;
+        sel.appendChild(opt);
+      });
     }
 
-    async function loadSelectedGroup() {
-      const gid = document.getElementById('groupSelect').value;
-      if (!gid) return;
-      try {
-        const res = await fetch(`/api/groups/${encodeURIComponent(gid)}`);
-        const { data } = await res.json();
-        if (data) {
-          document.getElementById('welcomeEnabled').checked = !!data.welcomeEnabled;
-          document.getElementById('welcomeMsg').value = data.welcomeMsg || '';
-          document.getElementById('goodbyeEnabled').checked = !!data.goodbyeEnabled;
-          document.getElementById('goodbyeMsg').value = data.goodbyeMsg || '';
-        }
-      } catch (e) {}
+    async function loadGroupSettings() {
+      const id = document.getElementById('groupSelect').value;
+      if(!id) return;
+      const res = await fetch('/api/groups/' + encodeURIComponent(id));
+      const { data } = await res.json();
+      document.getElementById('groupSettingsArea').style.display = 'block';
+      document.getElementById('welcomeEnabled').checked = !!data.welcomeEnabled;
+      document.getElementById('welcomeMsg').value = data.welcomeMsg || '';
+      document.getElementById('goodbyeEnabled').checked = !!data.goodbyeEnabled;
+      document.getElementById('goodbyeMsg').value = data.goodbyeMsg || '';
     }
 
     async function saveGroupSettings() {
-      const gid = document.getElementById('groupSelect').value;
-      if (!gid) return alert('Pilih grup terlebih dahulu!');
-      const payload = {
+      const id = document.getElementById('groupSelect').value;
+      const body = {
         welcomeEnabled: document.getElementById('welcomeEnabled').checked,
         welcomeMsg: document.getElementById('welcomeMsg').value,
         goodbyeEnabled: document.getElementById('goodbyeEnabled').checked,
         goodbyeMsg: document.getElementById('goodbyeMsg').value
       };
-      const res = await fetch(`/api/groups/${encodeURIComponent(gid)}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      alert(data.message || 'Konfigurasi grup tersimpan!');
+      await fetch('/api/groups/' + encodeURIComponent(id), { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
+      alert('Tersimpan!');
     }
 
-    // Polling status
-    async function checkStatus() {
-      try {
-        const res = await fetch('/api/settings');
-        if (res.ok) {
-          document.getElementById('waStatusBadge').className = 'badge badge-green';
-          document.getElementById('waStatusBadge').innerText = 'Online / Running';
-        }
-      } catch (e) {
-        document.getElementById('waStatusBadge').className = 'badge badge-gray';
-        document.getElementById('waStatusBadge').innerText = 'Offline';
-      }
-    }
-    setInterval(checkStatus, 5000);
-    checkStatus();
-    loadSettings();
+    setInterval(refreshData, 5000);
+    refreshData();
   </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
-# Panduan Menjalankan Lop-Bot di Termux (Android)
+# Panduan Instalasi Lop-Bot Multi-Slot (Termux)
 
-Lop-bot dilengkapi antarmuka web (Dashboard lokal) mirip control panel zxcoderid yang bisa diakses via browser Android.
+Sistem ini mendukung multi-nomor (slot bot) yang bisa dikelola langsung dari Dashboard Web localhost.
 
 ---
 
@@ -23,68 +23,49 @@ npm -v
 
 ## 2. Salin Folder / Clone Project
 
-Jika menyalin folder proyek dari memori internal atau SD card ke direktori Termux:
 ```bash
 termux-setup-storage
 cp -r /sdcard/Lop-bot ~/Lop-bot
 cd ~/Lop-bot
 ```
 
-Atau jika menggunakan git:
-```bash
-cd ~
-git clone <url-repo-kamu> Lop-bot
-cd Lop-bot
-```
-
 ---
 
 ## 3. Install Dependencies
 
-Di dalam folder `~/Lop-bot`:
 ```bash
 npm install
 ```
 
 ---
 
-## 4. Menjalankan Bot & Web Dashboard
+## 4. Jalankan Server Utama
 
-### Cara 1: Jalankan Keduanya Sekaligus
 ```bash
-npm run dev
+npm start
 ```
-Perintah ini akan menjalankan bot WA sekaligus Web Dashboard di background.
-
-### Cara 2: Menjalankan di Dua Sesi Termux (Direkomendasikan)
-Buka 2 window Termux (geser layar dari kiri ke kanan lalu pilih **New Session**):
-
-- **Window 1 (Web Dashboard):**
-  ```bash
-  cd ~/Lop-bot
-  node apiServer.js
-  ```
-  Dashboard berjalan di port `3000`.
-
-- **Window 2 (Bot WhatsApp):**
-  ```bash
-  cd ~/Lop-bot
-  node index.js
-  ```
-  Ikuti instruksi input nomor WA untuk meminta kode pairing jika sesi belum terdaftar.
+Server akan aktif di `http://localhost:3000`.
 
 ---
 
-## 5. Mengakses Web Dashboard
+## 5. Cara Menautkan Nomor (Pairing Code)
 
-Buka browser di HP kamu (Chrome / Firefox / Kiwi Browser), lalu buka alamat:
+1. Buka browser di HP kamu (Chrome/Kiwi), buka: `http://localhost:3000`.
+2. Klik tombol **[+]** (Floating Action Button) di pojok kanan bawah.
+3. Isi **Nama Slot** (misal: `Bot1`) dan **Nomor WhatsApp** (gunakan format internasional, misal: `628123456789`).
+4. Klik **Hubungkan**.
+5. Tunggu beberapa detik, **Kode Pairing** akan muncul di kotak hijau pada Tab Terminal.
+6. Buka WhatsApp yang ingin dijadikan bot: **Perangkat Tertaut > Tautkan Perangkat > Tautkan dengan nomor telepon**.
+7. Masukkan kode yang muncul di dashboard tadi.
+8. Bot akan otomatis online dan sesi disimpan di folder `auth_Bot1`.
 
-```text
-http://localhost:3000
-```
+---
 
-### Fitur Dashboard yang Tersedia:
-- **Dashboard**: Memantau status bot engine, port, dan koneksi WA.
-- **Terminal**: Melihat status koneksi bot dan pairing code.
-- **Settings**: Saklar Publik/Grup/Private, Anti-Call, Auto-Read, Auto-Bio, Prefix, Nama Bot, dan Template Caption Menu dengan placeholder chip (`$pushname`, `$botname`, `$prefix`, dll).
-- **Banner & Grup**: Mengatur pesan welcome/goodbye, gambar banner, serta aturan moderasi tiap grup.
+## 6. Kelola Beberapa Nomor
+
+Kamu bisa menambahkan slot baru (misal: `Bot2`) dengan mengulangi langkah di atas. Tiap nomor akan berjalan secara independen di satu server localhost yang sama.
+
+### Fitur Tersedia di Localhost:
+- **Terminal**: Tambah/Hapus/Restart slot bot dan lihat kode pairing.
+- **Settings**: Atur Public Mode, Anti-Call, Nama Bot, dan Prefix.
+- **Grup**: Atur pesan Welcome & Goodbye untuk tiap grup WhatsApp.
