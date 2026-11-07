@@ -86,11 +86,12 @@ async function startBot() {
     )
 
   if (!sock.authState.creds.registered) {
-    const nomor = (await ask('Masukkan nomor WA kamu (contoh 628123456789): ')).replace(/\D/g, '')
-    await new Promise((r) => setTimeout(r, 3000))
-    const kode = await sock.requestPairingCode(nomor)
-    console.log(`\n🔑 Kode pairing kamu: ${kode}`)
-  }
+      const nomor = process.env.BOT_PHONE || (await ask('Masukkan nomor WA kamu (contoh 628123456789): ')).replace(/\D/g, '');
+      const phone = nomor.replace(/\D/g, '');
+      await new Promise((r) => setTimeout(r, 3000));
+      const kode = process.env.PAIRING_CODE || (await sock.requestPairingCode(phone));
+      console.log(`\n🔑 Kode pairing kamu: ${kode}`);
+    }
 
   sock.ev.on('creds.update', saveCreds)
 
