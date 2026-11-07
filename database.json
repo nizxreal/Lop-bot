@@ -34,6 +34,60 @@
       "scheduleOpen": null,
       "scheduleClose": null,
       "warnings": {}
+    },
+    "120363428074505900@g.us": {
+      "welcomeEnabled": false,
+      "welcomeMsg": "Selamat datang @user di grup *{$group}*!",
+      "goodbyeEnabled": false,
+      "goodbyeMsg": "Selamat jalan @user!",
+      "antiLinkEnabled": false,
+      "antiLinkAction": "warn",
+      "allowedDomains": [
+        "github.com",
+        "youtube.com"
+      ],
+      "maxWarnings": 3,
+      "antiSpamEnabled": false,
+      "spamMaxMsgs": 5,
+      "spamWindowSec": 3,
+      "rules": "Belum ada aturan yang ditetapkan untuk grup ini.",
+      "warnings": {}
+    },
+    "120363424720008225@g.us": {
+      "welcomeEnabled": false,
+      "welcomeMsg": "Selamat datang @user di grup *{$group}*!",
+      "goodbyeEnabled": false,
+      "goodbyeMsg": "Selamat jalan @user!",
+      "antiLinkEnabled": false,
+      "antiLinkAction": "warn",
+      "allowedDomains": [
+        "github.com",
+        "youtube.com"
+      ],
+      "maxWarnings": 3,
+      "antiSpamEnabled": false,
+      "spamMaxMsgs": 5,
+      "spamWindowSec": 3,
+      "rules": "Belum ada aturan yang ditetapkan untuk grup ini.",
+      "warnings": {}
+    },
+    "120363417639874404@g.us": {
+      "welcomeEnabled": false,
+      "welcomeMsg": "Selamat datang @user di grup *{$group}*!",
+      "goodbyeEnabled": false,
+      "goodbyeMsg": "Selamat jalan @user!",
+      "antiLinkEnabled": false,
+      "antiLinkAction": "warn",
+      "allowedDomains": [
+        "github.com",
+        "youtube.com"
+      ],
+      "maxWarnings": 3,
+      "antiSpamEnabled": false,
+      "spamMaxMsgs": 5,
+      "spamWindowSec": 3,
+      "rules": "Belum ada aturan yang ditetapkan untuk grup ini.",
+      "warnings": {}
     }
   },
   "groupList": [
@@ -60,7 +114,7 @@
     {
       "id": "120363412917710450@g.us",
       "subject": "GRUP MABAR BLOX FRUITS 👾",
-      "membersCount": 115
+      "membersCount": 132
     }
   ]
 }
